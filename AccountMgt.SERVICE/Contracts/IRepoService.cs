@@ -7,5 +7,6 @@ namespace AccountMgt.SERVICE.Contracts
     public interface IRepoService
     {
         IAccountsService AccountsService { get; }
+        IUsersService UsersService { get; }
     }
 }

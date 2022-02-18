@@ -10,31 +10,30 @@ using System.Threading.Tasks;
 
 namespace AccountMgt.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class AccountsController : Controller
+    [Route("api/accounts")]
+    public class UsersController : Controller
     {
         private IRepoService _repoService;
-        public AccountsController(IRepoService repoService)
+        public UsersController(IRepoService repoService)
         {
             _repoService = repoService;
         }
 
-
-        [Route("")]
+        [Route("{id}/users")]
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromRoute]int id)
         {
             try
             {
-                var accounts = _repoService.AccountsService.Get();
+                var users = _repoService.UsersService.Get(id);
                 return StatusCode(StatusCodes.Status200OK, new ApiResponseDto
                 {
                     statusCode = StatusCodes.Status200OK,
                     message = "Successful",
                     validationError = false,
                     serverError = false,
-                    data = accounts
+                    data = users
                 });
             }
             catch (Exception ex)
@@ -50,18 +49,18 @@ namespace AccountMgt.API.Controllers
             }
         }
 
-        [Route("{id}")]
+        [Route("{accountId}/users/{userId}")]
         [HttpGet]
-        public IActionResult Get([FromRoute] int id)
+        public IActionResult Get([FromRoute]int accountId, [FromRoute]int userId)
         {
             try
             {
-                var account = _repoService.AccountsService.Get(id);
-                if (account == null)
+                var user = _repoService.UsersService.Get(accountId, userId);
+                if (user == null)
                     return StatusCode(StatusCodes.Status404NotFound, new ApiResponseDto
                     {
                         statusCode = StatusCodes.Status404NotFound,
-                        message = "Account not found",
+                        message = "User not found",
                         validationError = true,
                         serverError = false,
                     });
@@ -72,7 +71,7 @@ namespace AccountMgt.API.Controllers
                     message = "Successful",
                     validationError = false,
                     serverError = false,
-                    data = account
+                    data = user
                 });
             }
             catch (Exception ex)
@@ -88,9 +87,9 @@ namespace AccountMgt.API.Controllers
             }
         }
 
-        [Route("")]
+        [Route("{id}/users")]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Accounts account)
+        public async Task<IActionResult> Post([FromRoute]int id, [FromBody]Users user)
         {
             try
             {
@@ -105,86 +104,6 @@ namespace AccountMgt.API.Controllers
                     });
                 }
 
-                await _repoService.AccountsService.Add(account);
-                return StatusCode(StatusCodes.Status200OK, new ApiResponseDto
-                {
-                    statusCode = StatusCodes.Status200OK,
-                    message = "Successful",
-                    validationError = false,
-                    serverError = false,
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponseDto
-                {
-                    statusCode = StatusCodes.Status500InternalServerError,
-                    message = "Error occured in server",
-                    validationError = false,
-                    serverError = true,
-                    exception = ex
-                });
-            }
-        }
-
-        [Route("{id}")]
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Accounts model, [FromRoute] int id)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return StatusCode(StatusCodes.Status422UnprocessableEntity, new ApiResponseDto
-                    {
-                        statusCode = StatusCodes.Status422UnprocessableEntity,
-                        message = "Validation error in one or more entities",
-                        validationError = true,
-                        serverError = false,
-                    });
-                }
-
-                var account = _repoService.AccountsService.Get(id);
-                if(account == null)
-                    return StatusCode(StatusCodes.Status404NotFound, new ApiResponseDto
-                    {
-                        statusCode = StatusCodes.Status404NotFound,
-                        message = "Account not found",
-                        validationError = true,
-                        serverError = false,
-                    });
-
-                account.CompanyName = model.CompanyName;
-                account.Website = model.Website;
-                await _repoService.AccountsService.Update(account);
-
-                return StatusCode(StatusCodes.Status200OK, new ApiResponseDto
-                {
-                    statusCode = StatusCodes.Status200OK,
-                    message = "Successful",
-                    validationError = false,
-                    serverError = false,
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponseDto
-                {
-                    statusCode = StatusCodes.Status500InternalServerError,
-                    message = "Error occured in server",
-                    validationError = true,
-                    serverError = true,
-                    exception = ex
-                });
-            }
-        }
-
-        [Route("{id}")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromRoute]int id)
-        {
-            try
-            {
                 var account = _repoService.AccountsService.Get(id);
                 if (account == null)
                     return StatusCode(StatusCodes.Status404NotFound, new ApiResponseDto
@@ -195,13 +114,14 @@ namespace AccountMgt.API.Controllers
                         serverError = false,
                     });
 
-                await _repoService.AccountsService.Delete(account);
+                user.Account = account;
+                await _repoService.UsersService.Add(user);
                 return StatusCode(StatusCodes.Status200OK, new ApiResponseDto
                 {
                     statusCode = StatusCodes.Status200OK,
                     message = "Successful",
                     validationError = false,
-                    serverError = false,
+                    serverError = false
                 });
             }
             catch (Exception ex)
@@ -213,7 +133,96 @@ namespace AccountMgt.API.Controllers
                     validationError = false,
                     serverError = true,
                     exception = ex
-                }) ;
+                });
+            }
+        }
+
+        [Route("{accountId}/users/{userId}")]
+        [HttpPut]
+        public async Task<IActionResult> Put([FromRoute]int accountId, [FromRoute]int userId, [FromBody] Users model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return StatusCode(StatusCodes.Status422UnprocessableEntity, new ApiResponseDto
+                    {
+                        statusCode = StatusCodes.Status422UnprocessableEntity,
+                        message = "Validation error in one or more entities",
+                        validationError = true,
+                        serverError = false,
+                    });
+                }
+
+                var user = _repoService.UsersService.Get(accountId, userId);
+                if (user == null)
+                    return StatusCode(StatusCodes.Status404NotFound, new ApiResponseDto
+                    {
+                        statusCode = StatusCodes.Status404NotFound,
+                        message = "User not found",
+                        validationError = true,
+                        serverError = false,
+                    });
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+                await _repoService.UsersService.Update(user);
+                return StatusCode(StatusCodes.Status200OK, new ApiResponseDto
+                {
+                    statusCode = StatusCodes.Status200OK,
+                    message = "Successful",
+                    validationError = false,
+                    serverError = false
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponseDto
+                {
+                    statusCode = StatusCodes.Status500InternalServerError,
+                    message = "Error occured in server",
+                    validationError = false,
+                    serverError = true,
+                    exception = ex
+                });
+            }
+        }
+
+        [Route("{accountId}/users/{userId}")]
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromRoute]int accountId, [FromRoute]int userId)
+        {
+            try
+            {
+                var user = _repoService.UsersService.Get(accountId, userId);
+                if (user == null)
+                    return StatusCode(StatusCodes.Status404NotFound, new ApiResponseDto
+                    {
+                        statusCode = StatusCodes.Status404NotFound,
+                        message = "User not found",
+                        validationError = true,
+                        serverError = false,
+                    });
+                await _repoService.UsersService.Delete(user);
+                return StatusCode(StatusCodes.Status200OK, new ApiResponseDto
+                {
+                    statusCode = StatusCodes.Status200OK,
+                    message = "Successful",
+                    validationError = false,
+                    serverError = false
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponseDto
+                {
+                    statusCode = StatusCodes.Status500InternalServerError,
+                    message = "Error occured in server",
+                    validationError = false,
+                    serverError = true,
+                    exception = ex
+                });
             }
         }
     }

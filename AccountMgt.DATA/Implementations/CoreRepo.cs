@@ -28,7 +28,7 @@ namespace AccountMgt.DATA.Implementations
             _dbContext.Set<TEntity>().Add(entity);
         }
 
-        public TEntity Get(object id)
+        public virtual TEntity Get(int id)
         {
             return _dbContext.Set<TEntity>().Find(id);
         }

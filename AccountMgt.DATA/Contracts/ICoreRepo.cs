@@ -11,7 +11,7 @@ namespace AccountMgt.DATA.Contracts
     {
         IQueryable<T> Get();
 
-        T Get(object id);
+        T Get(int id);
         IQueryable<T> Find(Expression<Func<T, bool>> predicate);
         void Add(T entity);
         void Update(T entity);

@@ -10,6 +10,7 @@ namespace AccountMgt.SERVICE.Implementation
     {
         private readonly IUnitOfWork uow;
         private IAccountsService _accountsService;
+        private IUsersService _usersService;
 
         public RepoService(IUnitOfWork uow)
         {
@@ -25,6 +26,17 @@ namespace AccountMgt.SERVICE.Implementation
                     _accountsService = new AccountsService(uow);
 
                 return _accountsService;
+            }
+        }
+
+        public IUsersService UsersService
+        {
+            get
+            {
+                if (_usersService == null)
+                    _usersService = new UsersService(uow);
+
+                return _usersService;
             }
         }
     }

@@ -10,11 +10,13 @@ namespace AccountMgt.DATA.Implementations
     {
         private readonly ApplicationDbContext _context;
         public AccountsRepo AccountsRepo { get; set; }
+        public UsersRepo UsersRepo { get; set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
             this._context = context;
             this.AccountsRepo = new AccountsRepo(this._context);
+            this.UsersRepo = new UsersRepo(this._context);
         }
 
         public async Task Save()
