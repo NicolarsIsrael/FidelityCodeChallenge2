@@ -15,6 +15,7 @@ namespace AccountMgt.DATA
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<Users>().HasIndex(u => u.EmailAddress).IsUnique();
         }
 
         public DbSet<Accounts> Accounts { get; set; }
