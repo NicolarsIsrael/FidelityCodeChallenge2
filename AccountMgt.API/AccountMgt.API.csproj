@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AccountMgt.CORE\AccountMgt.CORE.csproj" />
+    <ProjectReference Include="..\AccountMgt.DAO\AccountMgt.DAO.csproj" />
     <ProjectReference Include="..\AccountMgt.DATA\AccountMgt.DATA.csproj" />
     <ProjectReference Include="..\AccountMgt.SERVICE\AccountMgt.SERVICE.csproj" />
   </ItemGroup>

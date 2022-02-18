@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountMgt.DATA", "..\Accou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountMgt.SERVICE", "..\AccountMgt.SERVICE\AccountMgt.SERVICE.csproj", "{FA8DE95B-B4BF-4108-9E7E-546442056F2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountMgt.DAO", "..\AccountMgt.DAO\AccountMgt.DAO.csproj", "{709D7B62-A01C-4E9E-AADD-FBEBBB7135EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FA8DE95B-B4BF-4108-9E7E-546442056F2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA8DE95B-B4BF-4108-9E7E-546442056F2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA8DE95B-B4BF-4108-9E7E-546442056F2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{709D7B62-A01C-4E9E-AADD-FBEBBB7135EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{709D7B62-A01C-4E9E-AADD-FBEBBB7135EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{709D7B62-A01C-4E9E-AADD-FBEBBB7135EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{709D7B62-A01C-4E9E-AADD-FBEBBB7135EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
